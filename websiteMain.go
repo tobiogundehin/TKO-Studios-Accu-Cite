@@ -1,26 +1,29 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"net/http"
-	"os"
+    "fmt"
+    "net/http"
+    "database/sql"
+    "github.com/go-sql-driver/mysql"
 )
 
-type Page struct {
-	Title string
-	Body  []byte
-}
-
-func loadPage(title string) (*Page, error) {
-	filename := title + ".txt"
-	body, err := os.ReadFile(filename)
-	if err != nil {
-		return nil, err
-	}
-	return &Page{Title: title, Body: body}, nil
-}
-
 func main() {
-	log.Fatal(http.ListenAndServe(":8080", nil))
+    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+        fmt.Fprintf(w, "Hello Go Application!")
+    })
+
+    http.HandleFunc("/greet/", func(w http.ResponseWriter, r *http.Request) {
+        name:= r.URL.Path[len("/greet/"):]
+            fmt.Fprintf(w, "Hello %s\n", name)
+    })
+
+    http.ListenAndServe(":9990", nil)
+    
+    db, err := sql.Open("mysql", "tko:g0Valp0!@tcp(dimsum@valpo.edu:9990)/full_stack
+    
+    if err != nil {
+    	panic(err.Error())
+    }
+    
+    defer db.Close()
 }
