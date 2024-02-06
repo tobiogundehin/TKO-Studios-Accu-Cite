@@ -11,7 +11,10 @@
             <p class="article-author">{{ article.author }}</p>
             <p class="article-summary">{{ article.summary }}</p>
             <p class="article-year">{{ article.year }}</p>
-            <button class="details-button">View Details</button>
+            <router-link :to="'/search/'+ article.id" >
+                <button class="details-button">View Details</button>
+            </router-link>
+            
         </div>
     </div>
 </template>
