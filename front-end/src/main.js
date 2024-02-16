@@ -6,7 +6,13 @@ import SearchPage from './pages/SearchPage.vue'
 import LibraryPage from './pages/LibraryPage.vue'
 import ArticleInfoPage from './pages/ArticleInfoPage.vue'
 import HomePage from './pages/HomePage.vue'
+import LoginPage from './pages/LoginPage.vue'
+import SignupPage from './pages/SignupPage.vue'
 
+
+// Function to check if the user is logged in
+
+//Router to manage page pathing
 createApp(App)
 .use(VueRouter.createRouter({
     history: VueRouter.createWebHistory(process.env.BASE_URL),
@@ -14,6 +20,7 @@ createApp(App)
         path: '/search',
         component: SearchPage,
     },{
+        //Make requiresAuth: true
         path: '/library',
         component: LibraryPage,
     },{
@@ -22,6 +29,12 @@ createApp(App)
     },{
         path: '/home',
         component: HomePage,
+    },{
+        path: '/login',
+        component: LoginPage,
+    },{
+        path:'/signup',
+        component: SignupPage,
     }]
 }))
 .mount('#app')

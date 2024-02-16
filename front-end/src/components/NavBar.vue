@@ -23,7 +23,7 @@
             </router-link>
         </ul>
         <!-- Add Link to Sign Up/Sign in Page -->
-    <a class="cta">
+    <a class="cta" href="./login">
         <button>Sign In</button>
     </a>
     </nav>

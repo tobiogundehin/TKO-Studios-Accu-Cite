@@ -50,3 +50,13 @@ export const articles = [{
     name: 'Snappy Dap Up',
     author: 'Elias Lopez',
 }];
+
+export default class userInfo {
+    static users = [
+        { email: 'nrosasco@valpo.edu',
+        username: 'nrosasco',
+        f_name: "Nick",
+        l_name: "Rosasco",
+        password: "g0valp0"},
+    ]
+}
