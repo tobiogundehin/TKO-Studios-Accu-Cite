@@ -410,3 +410,8 @@
     width: 100vw;
     height: 25vh;
   }
+
+  .create-entry{
+    background-color: rgba(156, 144, 144, 0.66);
+    color: #0088a9;
+  }

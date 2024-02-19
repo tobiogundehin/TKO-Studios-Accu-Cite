@@ -15,11 +15,11 @@
 import { articles } from '@/temp-data';
 
 export default{
-    name: "ArticleInfoPage",
-    data(){
-        return{
-            article: articles.find(article => article.id === this.$route.params.articleId),
-        }
-    },
+        name: "ArticleInfoPage",
+        data(){
+            return{
+                article: articles.find(article => article.id === this.$route.params.articleId),
+            }
+        },
 }
 </script>

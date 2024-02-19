@@ -1,6 +1,12 @@
 <!-- Every User's personal library to perform tasks on articles selected by them from search or manually-->
 <template>
     <h1>My Library</h1>
+    <div>
+        <router-link to="/createentry" >
+            <button class="create-entry">Create Entry</button>
+        </router-link>
+        
+    </div>
     <div v-if="libraryItems.length > 0">
         <table class="library-table">
         <thead>
@@ -23,6 +29,9 @@
     </td>
     <td>
         {{ article.name }}
+    </td>
+    <td>
+        <a>Remove</a>
     </td>
     </tr>
         </tbody>    

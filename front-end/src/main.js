@@ -8,6 +8,7 @@ import ArticleInfoPage from './pages/ArticleInfoPage.vue'
 import HomePage from './pages/HomePage.vue'
 import LoginPage from './pages/LoginPage.vue'
 import SignupPage from './pages/SignupPage.vue'
+import CreateEntryPage from './pages/CreateEntryPage.vue'
 
 
 // Function to check if the user is logged in
@@ -35,6 +36,9 @@ createApp(App)
     },{
         path:'/signup',
         component: SignupPage,
+    },{
+        path:'/createentry',
+        component: CreateEntryPage,
     }]
 }))
 .mount('#app')
