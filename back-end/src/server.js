@@ -1,6 +1,6 @@
 // To run server, run "npx babel-node .\src\server.js" from backend directory
 import express, { response } from 'express';
-import 
+import { entries, libraryItems } from './temp-data';
 
 const app = express();
 
@@ -9,14 +9,14 @@ app.get('/hello', (req, res) =>{
 });
 
 app.get('/search', (req,res) =>{
-
+    res.json(entries);
 });
 
 app.get('/library',(req,res)=>{
-
+    res.json(libraryItems);
 });
 
-app.get('/search/:articleId',(req,res)=>{
+app.get('/search/:entryid',(req,res)=>{
 
 });
 
