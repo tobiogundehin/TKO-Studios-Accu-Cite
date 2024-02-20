@@ -18,7 +18,7 @@ export default{
         name: "ArticleInfoPage",
         data(){
             return{
-                entry: entries.find(entry => entry.id === this.$route.params.entryid),
+                entry: entries.find(entry => entry.id === this.$route.params.entryId),
             }
         },
 }

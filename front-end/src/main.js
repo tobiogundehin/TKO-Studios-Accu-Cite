@@ -25,7 +25,7 @@ createApp(App)
         path: '/library',
         component: LibraryPage,
     },{
-        path: '/search/:entryid',
+        path: '/search/:entryId',
         component: ArticleInfoPage,
     },{
         path: '/home',

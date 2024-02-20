@@ -16,8 +16,10 @@ app.get('/library',(req,res)=>{
     res.json(libraryItems);
 });
 
-app.get('/search/:entryid',(req,res)=>{
-
+app.get('/search/:entryId',(req,res)=>{
+    const entryId = req.params.entryId;
+    const entry = entries.find(entry => entry.id === entryId);
+    res.json(entry);
 });
 
 app.listen(8000, () => {
