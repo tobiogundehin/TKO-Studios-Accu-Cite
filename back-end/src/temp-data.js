@@ -1,19 +1,5 @@
 
-export const libraryItems =[{
-    id: '001',
-    name: 'How to Bore a Class',
-    author: 'Nick Rosasco',
-    year: 2024,
-    summary: 'How to achieve maximum boredom in minimum time lorem ipsum bipsum lorem ipsum bipsum lorem ipsum bipsum lorem ipsum bipsum lorem ipsum bipsum',
-}, {
-    id: '002',
-    name: 'The Best in the World',
-    author: 'Tobi Ogundehin',
-}, {
-    id: '003',
-    name: 'Big Boots',
-    author: 'Tristan Hopeson',
-}]
+export const libraryItems =['001', '003'];
 
 export const entries = [{
     id: '001',
