@@ -35,4 +35,13 @@ export const entries = [{
     id: '008',
     name: 'Snappy Dap Up',
     author: 'Elias Lopez',
+},
+{
+    id: '009',
+    name: 'Testing Testing',
+    author: 'Elias Lopez',
+},{
+    id: '010',
+    name: 'WIUHNAIUNDINI',
+    author: 'Nikola Testa'
 }];

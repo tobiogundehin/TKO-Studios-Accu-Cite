@@ -12,7 +12,7 @@ app.get('/hello', (req, res) =>{
     res.send('Hello!');
 });
 
-app.get('/search', (req,res) =>{
+app.get('/api/search', (req,res) =>{
     res.json(entries);
 });
 
@@ -21,19 +21,19 @@ function populateLibraryIds(ids){
 }
 
 // Show User Library, populated from the id of items in library
-app.get('/library',(req,res)=>{
+app.get('/api/library',(req,res)=>{
     const populatedLibrary = populateLibraryIds(libraryItems)
     res.json(populatedLibrary);
 });
 
-app.get('/search/:entryId',(req,res)=>{
+app.get('/api/search/:entryId',(req,res)=>{
     const entryId = req.params.entryId;
     const entry = entries.find(entry => entry.id === entryId);
     res.json(entry);
 });
 
 // Add Items to User Library
-app.post('/library', (req,res) =>{
+app.post('/api/library', (req,res) =>{
     const entryId = req.body.id;
     libraryItems.push(entryId);
     const populatedLibrary = populateLibraryIds(libraryItems)
@@ -41,7 +41,7 @@ app.post('/library', (req,res) =>{
 
 })
 
-app.delete('/library/:entryId', (req, res) => {
+app.delete('/api/library/:entryId', (req, res) => {
     const entryId = req.params.entryId;
     libraryItems = libraryItems.filter(id => id !== entryId);
     const populatedLibrary = populateLibraryIds(libraryItems)

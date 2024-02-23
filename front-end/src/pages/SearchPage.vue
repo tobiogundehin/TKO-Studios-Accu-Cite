@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { entries } from '@/temp-data';
 
 export default{
@@ -28,6 +29,11 @@ export default{
         return{
             entries,
         }
+    },
+    async created(){
+       const response = await axios.get('/api/search');
+       const entries = response.data;
+       this.entries = entries;
     }
 }
 </script>
