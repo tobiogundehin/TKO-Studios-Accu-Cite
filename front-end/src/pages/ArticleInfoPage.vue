@@ -9,7 +9,10 @@
         <h2>Abstract</h2>
         <h3 class="article-summary">{{ entry.summary }}</h3>
     </div>
-    <button>Add to Library</button>
+    <div>
+        <button class="details-button">Add to Library</button>
+    </div>
+    
 </template>
 
 <script>
@@ -23,7 +26,7 @@ export default{
             }  
         },
         async created(){
-            const response = await axios.get('/api/search/${this.$route.params.entryId}');
+            const response = await axios.get(`/api/search/${this.$route.params.entryId}`);
             const entry = response.data;
             this.entry = entry;
         }
