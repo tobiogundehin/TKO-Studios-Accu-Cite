@@ -21,7 +21,7 @@ function populateLibraryIds(ids){
 }
 
 // Show User Library, populated from the id of items in library
-app.get('/api/library',(req,res)=>{
+app.get('/api/users/:userId/library',(req,res)=>{
     const populatedLibrary = populateLibraryIds(libraryItems)
     res.json(populatedLibrary);
 });

@@ -1,6 +1,6 @@
 <template>
     <h1>Create New Entry</h1>
-    <div class="container">
+    <div class="create-form-container">
         <div class="center">
             <form @submit.prevent="submitForm">
                 <div class="txt_field">

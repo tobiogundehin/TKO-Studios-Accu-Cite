@@ -21,13 +21,13 @@
 
 <script>
 import axios from 'axios';
-import { entries } from '@/temp-data';
+
 
 export default{
     name: "SearchPage",
     data(){
         return{
-            entries,
+            entries: {},
         }
     },
     async created(){

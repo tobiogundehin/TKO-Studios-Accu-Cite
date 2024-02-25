@@ -9,17 +9,23 @@
         <h2>Abstract</h2>
         <h3 class="article-summary">{{ entry.summary }}</h3>
     </div>
+    <button>Add to Library</button>
 </template>
 
 <script>
-import { entries } from '@/temp-data';
+import axios from 'axios';
 
 export default{
         name: "ArticleInfoPage",
         data(){
             return{
-                entry: entries.find(entry => entry.id === this.$route.params.entryId),
-            }
+                entry: {},
+            }  
         },
+        async created(){
+            const response = await axios.get('/api/search/${this.$route.params.entryId}');
+            const entry = response.data;
+            this.entry = entry;
+        }
 }
 </script>

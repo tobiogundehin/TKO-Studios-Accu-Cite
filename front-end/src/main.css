@@ -293,20 +293,21 @@
     margin: auto;
   }
 
-  /* LOGIN AND SIGN UO PAGES */
+  /* LOGIN AND SIGN UP PAGES */
   .center{
     position: absolute;
-    top: 50%;
+    top: 55%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 29vw;
     background: white;
-    border-radius: 10px;
+    border: 1px solid rgb(51, 184, 193);
+    border-radius: 15px;
   }
   
   .center h1{
     text-align: center;
-    padding: 0 0 20px 0;
+    padding: 0 0 20px 20px;
     border-bottom: 1px solid silver;
   }
   
@@ -415,3 +416,10 @@
     background-color: rgba(156, 144, 144, 0.66);
     color: #0088a9;
   }
+/* CREATE FORM */
+.create-form-container{
+  background-color: black;
+  color: black;
+  border: 1px solid black;
+  display: flex;
+}

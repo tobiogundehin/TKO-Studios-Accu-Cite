@@ -42,6 +42,6 @@ export const entries = [{
     author: 'Elias Lopez',
 },{
     id: '010',
-    name: 'WIUHNAIUNDINI',
-    author: 'Nikola Testa'
+    name: 'WTF RN',
+    author: 'Tyler the Creator'
 }];

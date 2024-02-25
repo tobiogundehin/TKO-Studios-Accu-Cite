@@ -20,7 +20,9 @@
                     <tr v-for="entry in libraryItems" :key="entry.id">
                         <td>{{ entry.author }}</td>
                         <td>{{ entry.year }}</td>
-                        <td>{{ entry.title }}</td>
+                        <router-link :to="'/search/'+ entry.id">
+                            <td>{{ entry.name }}</td>
+                        </router-link>
                         <td><button @click="removeEntry(entry)">Remove</button></td>
                     </tr>
                 </tbody>    
@@ -40,29 +42,13 @@ export default {
     name: "LibraryPage",
     data() {
         return {
-            libraryItems: []
+            libraryItems: {}
         };
     },
-    methods: {
-        async fetchEntries() {
-            try {
-                const response = await axios.get('http://localhost:8080/entries');
-                this.libraryItems = response.data;
-            } catch (error) {
-                console.error(error);
-            }
+   async created(){
+            const response = await axios.get('/api/users/12345/library');
+            const libraryItems = response.data;
+            this.libraryItems = libraryItems;
         },
-        async removeEntry(entry) {
-            try {
-                await axios.delete(`http://localhost:8080/entries/${entry.id}`);
-                this.libraryItems = this.libraryItems.filter(item => item.id !== entry.id);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-    },
-    mounted() {
-        this.fetchEntries();
-    }
 };
 </script>
