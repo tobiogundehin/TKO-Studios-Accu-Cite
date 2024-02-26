@@ -33,7 +33,7 @@ app.get('/api/search/:entryId',(req,res)=>{
 });
 
 // Add Items to User Library
-app.post('/api/library', (req,res) =>{
+app.post('/api/users/:userId/library', (req,res) =>{
     const entryId = req.body.id;
     libraryItems.push(entryId);
     const populatedLibrary = populateLibraryIds(libraryItems)
@@ -41,7 +41,7 @@ app.post('/api/library', (req,res) =>{
 
 })
 
-app.delete('/api/library/:entryId', (req, res) => {
+app.delete('/api/users/:userId/library/:entryId', (req, res) => {
     const entryId = req.params.entryId;
     libraryItems = libraryItems.filter(id => id !== entryId);
     const populatedLibrary = populateLibraryIds(libraryItems)

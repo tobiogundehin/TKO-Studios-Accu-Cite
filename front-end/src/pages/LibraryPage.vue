@@ -23,7 +23,7 @@
                         <router-link :to="'/search/'+ entry.id">
                             <td>{{ entry.name }}</td>
                         </router-link>
-                        <td><button @click="removeEntry(entry)">Remove</button></td>
+                        <td><button @click="removeFromLibrary(entry.id)">Remove</button></td>
                     </tr>
                 </tbody>    
             </table>
@@ -44,6 +44,13 @@ export default {
         return {
             libraryItems: {}
         };
+    },
+    methods: {
+        async removeFromLibrary(entryId){
+            const response = await axios.delete(`/api/users/12345/library/${entryId}`);
+            const updatedLibrary = response.data;
+            this.libraryItems = updatedLibrary;
+        }
     },
    async created(){
             const response = await axios.get('/api/users/12345/library');

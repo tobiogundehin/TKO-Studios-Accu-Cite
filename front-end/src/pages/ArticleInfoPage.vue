@@ -10,7 +10,7 @@
         <h3 class="article-summary">{{ entry.summary }}</h3>
     </div>
     <div>
-        <button class="details-button">Add to Library</button>
+        <button @click="addtoLibrary" class="details-button">Add to Library</button>
     </div>
     
 </template>
@@ -24,6 +24,12 @@ export default{
             return{
                 entry: {},
             }  
+        },
+        methods:{
+            async addtoLibrary(){
+                await axios.post(`/api/users/12345/library`, {id: this.$route.params.entryId});
+                alert('Successfully added to Library')
+            }
         },
         async created(){
             const response = await axios.get(`/api/search/${this.$route.params.entryId}`);
