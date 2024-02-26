@@ -45,3 +45,7 @@ export const entries = [{
     name: 'WIUHNAIUNDINI',
     author: 'Nikola Testa'
 }];
+
+export const logins = [{
+    
+}]

@@ -41,6 +41,10 @@ app.post('/api/library', (req,res) =>{
 
 })
 
+app.userAthuthenticate('/login', (req, res) => {
+    
+})
+
 app.delete('/api/library/:entryId', (req, res) => {
     const entryId = req.params.entryId;
     libraryItems = libraryItems.filter(id => id !== entryId);
