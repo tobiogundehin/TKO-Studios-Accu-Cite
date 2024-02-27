@@ -26,7 +26,21 @@
 </template>
 
 <script>
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 export default{
     name:"LoginPage",
+    methods: {
+        const auth = getAuth(firebaseApp);
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+        // Signed up 
+        const user = userCredential.user;
+        // ...
+     })
+    .catch((err) => {
+        console.log(err.code);
+        console.log(err.message);
+    });
+    }
 }
 </script>

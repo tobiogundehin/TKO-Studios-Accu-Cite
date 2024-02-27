@@ -10,7 +10,10 @@ import LoginPage from './pages/LoginPage.vue'
 import SignupPage from './pages/SignupPage.vue'
 import CreateEntryPage from './pages/CreateEntryPage.vue'
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
+
 
 // Function to check if the user is logged in
 //User authentication

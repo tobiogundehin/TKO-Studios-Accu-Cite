@@ -41,9 +41,20 @@ app.post('/api/library', (req,res) =>{
 
 })
 
-app.userAthuthenticate('/login', (req, res) => {
-    
-})
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
+const auth = getAuth(firebaseApp);
+
+createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed up 
+    const user = userCredential.user;
+    // ...
+  })
+  .catch((err) => {
+    console.log(err.code);
+    console.log(err.message);
+  });
 
 app.delete('/api/library/:entryId', (req, res) => {
     const entryId = req.params.entryId;
