@@ -1,6 +1,25 @@
 // To run server, run "npx babel-node .\src\server.js" from backend directory
-import express, { response } from 'express';
-import { entries as entriesRaw, libraryItems as libraryItemsRaw} from './temp-data';
+//import express, { response } from 'express';
+//import { entries as entriesRaw, libraryItems as libraryItemsRaw} from './temp-data';
+const MYSQLBackend = require("./DatabaseFunctions");
+
+var mysql = require('mysql');
+var con = mysql.createConnection({
+    host: "localhost",
+    port: 8080,
+    user: "root",
+    password: "g0Valp0!",
+    database: "full_stack",
+  });
+
+
+  con.connect(function(err) {
+    if (err) throw err;
+    con.query("SELECT * FROM entries", function (err, result, fields) {
+      if (err) throw err;
+      return console.log(result);
+    });
+  });
 
 let libraryItems = libraryItemsRaw;
 let entries = entriesRaw;
@@ -18,7 +37,7 @@ app.get('/api/search', (req,res) =>{
 
 function populateLibraryIds(ids){
     return ids.map(id => entries.find(entry => entry.id === id));
-}
+} 
 
 // Show User Library, populated from the id of items in library
 app.get('/api/users/:userId/library',(req,res)=>{
@@ -47,6 +66,11 @@ app.delete('/api/users/:userId/library/:entryId', (req, res) => {
     const populatedLibrary = populateLibraryIds(libraryItems)
     res.json(populatedLibrary);
 })
+
+async function runMySQL(){
+    const MYSQLBackend = new MYSQLBackend();
+    return MYSQLBackend.max();
+}
 
 app.listen(8000, () => {
     console.log("Server is listening on port 8000")
