@@ -1,6 +1,6 @@
 // To run server, run "npx babel-node .\src\server.js" from backend directory
-// import express, { response } from 'express';
-import { libraryItems as libraryItemsRaw} from './temp-data';
+import express, { response } from 'express';
+import { entries as entriesRaw, libraryItems as libraryItemsRaw} from './temp-data';
 
 const express = require("express");
 const app = express();
@@ -52,29 +52,17 @@ app.get('/hello', (req, res) =>{
 });
 
 app.get('/api/search', (req,res) =>{
-    const sqlGet = "SELECT * FROM entries";
-    con.query(sqlGet, [], (err, result) => {
-        res.json(result );
-    })
-    
+    res.json(entries);
 });
 
-app.post('/api/createentry', (req,res)=> {
-  const title = req.body.title;
-  const Last = req.body.Last;
-  const First = req.body.First;
-  const Middle = req.body.Middle;
-  const year = req.body.year;
-  const publisher = req.body.publisher;
-  const format = req.body.format;
-  const abstract = req.body.abstract;
-  const sqlInsert = "INSERT INTO entries (title, Last, First, Middle, year, publisher, format, summary) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-  const sqlGet = "SELECT * FROM entries"; 
-  con.query(sqlInsert, [title, Last, First, Middle, year, publisher, format, abstract], (err, result) => {
-    con.query(sqlGet, [], (err, result) => {
-      res.json(result);
-  })
-    })
+function populateLibraryIds(ids){
+    return ids.map(id => entries.find(entry => entry.id === id));
+}
+
+// Show User Library, populated from the id of items in library
+app.get('/api/users/:userId/library',(req,res)=>{
+    const populatedLibrary = populateLibraryIds(libraryItems)
+    res.json(populatedLibrary);
 });
 
 app.get('/api/search/:entryId',(req,res)=>{
@@ -121,15 +109,13 @@ app.post('/api/users/:userId/library', (req,res) =>{
     
 })
 
-// app.delete('/api/users/:userId/library/:entryId', (req, res) => {
-//     const entryId = req.params.entryId;
-//     libraryItems = libraryItems.filter(id => id !== entryId);
-//     const populatedLibrary = populateLibraryIds(libraryItems)
-//     res.json(populatedLibrary);
-// })
+app.delete('/api/users/:userId/library/:entryId', (req, res) => {
+    const entryId = req.params.entryId;
+    libraryItems = libraryItems.filter(id => id !== entryId);
+    const populatedLibrary = populateLibraryIds(libraryItems)
+    res.json(populatedLibrary);
+})
 
-// async function runMySQL(){
-//     const MYSQLBackend = new MYSQLBackend();
-//     return MYSQLBackend.max();
-// }
-
+app.listen(8000, () => {
+    console.log("Server is listening on port 8000")
+})
