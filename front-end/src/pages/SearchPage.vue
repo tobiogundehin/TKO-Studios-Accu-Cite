@@ -7,10 +7,10 @@
         v-for="entry in entries"
         :key="entry.id"
         >
-            <h3 class="article-name">{{ entry.name }}</h3>
-            <p class="article-author">{{ entry.author }}</p>
+            <h3 class="article-name">{{ entry.title }}</h3>
+            <p class="article-author">{{ entry.Last }} {{ entry.Middle }} {{  entry.First }}</p>
             <p class="article-summary">{{ entry.summary }}</p>
-            <p class="article-year">{{ entry.year }}</p>
+            <p class="article-year">{{ entry.year }} - {{  entry.publisher }}</p>
             <router-link :to="'/search/'+ entry.id" >
                 <button class="details-button">View Details</button>
             </router-link>

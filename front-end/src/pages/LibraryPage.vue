@@ -18,12 +18,12 @@
                 </thead>
                 <tbody>
                     <tr v-for="entry in libraryItems" :key="entry.id">
-                        <td>{{ entry.author }}</td>
-                        <td>{{ entry.year }}</td>
-                        <router-link :to="'/search/'+ entry.id">
-                            <td>{{ entry.name }}</td>
+                        <td>{{ entry[0].First }} {{ entry[0].Middle }} {{  entry[0].Last }}</td>
+                        <td>{{ entry[0].year }}</td>
+                        <router-link :to="'/search/'+ entry[0].id">
+                            <td>{{ entry[0].title }}</td>
                         </router-link>
-                        <td><button @click="removeFromLibrary(entry.id)">Remove</button></td>
+                        <td><button @click="removeFromLibrary(entry[0].id)">Remove</button></td>
                     </tr>
                 </tbody>    
             </table>
@@ -42,7 +42,7 @@ export default {
     name: "LibraryPage",
     data() {
         return {
-            libraryItems: {}
+            libraryItems: {},
         };
     },
     methods: {

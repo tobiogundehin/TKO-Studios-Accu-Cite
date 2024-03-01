@@ -9,17 +9,17 @@
                     <label>Title</label>
                 </div>
                 <div class="txt_field">
-                    <input v-model="last_name" type="text" name="last_name">
+                    <input v-model="Last" type="text" name="Last">
                     <span></span>
                     <label>Author's Last Name</label>
                 </div>
                 <div class="txt_field">
-                    <input v-model="first_name" type="text" name="first_name">
+                    <input v-model="First" type="text" name="First">
                     <span></span>
                     <label>Author's First Name</label>
                 </div>
                 <div class="txt_field">
-                    <input v-model="middle_name" type="text" name="middle_name">
+                    <input v-model="Middle" type="text" name="Middle">
                     <span></span>
                     <label>Author's Middle Name</label>
                 </div>
@@ -39,11 +39,15 @@
                     <label>Format</label>
                 </div>
                 <div class="txt_field">
-                    <input v-model="summary" type="text" name="summary">
+                    <input v-model="abstract" type="text" name="abstract">
                     <span></span>
-                    <label>Summary</label>
+                    <label>Abstract</label>
                 </div>
-                <input name="submit" type="Submit" value="Create">
+                <router-link :to="'/search/'">
+                    <button @click="submitForm()">Create</button>
+            </router-link>
+
+                
             </form>
         </div>
     </div>
@@ -57,25 +61,33 @@ export default {
     data() {
         return {
             title: "",
-            author: "",
+            Last: "",
+            First: "",
+            Middle: "",
             year: "",
-            type: "",
+            publisher: "",
+            format: "",
             abstract: ""
         };
     },
     methods: {
-        submitForm() {
-        axios.post("http://10.3.158.186:8080/backend/server.go", {
-            title: this.title,
-            author: this.author,
-            year: this.year,
-            type: this.type,
-            abstract: this.abstract
-        }).then((response) =>{
-            console.log(response.data);
-        }).catch((error) =>{
-            console.log(error);
-        })
+        async submitForm() {
+            await axios.post("./api/createentry", {
+                title: this.title,
+                Last: this.Last,
+                First: this.First,
+                Middle: this.Middle,
+                year: this.year,
+                publisher: this.publisher,
+                format: this.format,
+                abstract: this.abstract
+            
+            })
+        // .then((response) =>{
+        //     console.log(response);
+        // }).catch((error) =>{
+        //     console.log(error);
+        // })
 }}
 };
 </script>
