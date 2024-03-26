@@ -84,6 +84,13 @@ app.get('/api/search/:entryId',(req,res)=>{
     })
 }); 
 
+app.get('/api/search/:entryId/editEntryPage',(req,res)=>{
+  const entryId = req.params.entryId;
+  con.query("SELECT * FROM entries WHERE id = ?", entryId, (err, result) => {
+      res.json(result);
+  })
+});
+
 app.delete('/api/search/:entryId',(req,res)=>{
   const entryId = req.params.entryId;
   const sqlGet = "SELECT * FROM entries";

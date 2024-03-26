@@ -72,7 +72,7 @@ export default {
     },
     methods: {
         async submitForm() {
-            await axios.post("./api/createentry", {
+            await axios.post("./api/editEntry", {
                 title: this.title,
                 Last: this.Last,
                 First: this.First,
