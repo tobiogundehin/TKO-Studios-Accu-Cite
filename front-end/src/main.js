@@ -9,6 +9,8 @@ import HomePage from './pages/HomePage.vue'
 import LoginPage from './pages/LoginPage.vue'
 import SignupPage from './pages/SignupPage.vue'
 import CreateEntryPage from './pages/CreateEntryPage.vue'
+import EditEntryPage from './pages/EditEntryPage.vue';
+//import { initializeApp} from "firebase/app";
 
 
 // Function to check if the user is logged in
@@ -39,6 +41,9 @@ createApp(App)
     },{
         path:'/createentry',
         component: CreateEntryPage,
+    },{
+        path:'/search/:entryId/editEntryPage',
+        component: EditEntryPage,
     }]
 }))
 .mount('#app')
