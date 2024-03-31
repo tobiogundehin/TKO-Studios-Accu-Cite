@@ -2,9 +2,15 @@
  <div class="container">
       <div class="center">
           <h1>Create an Account</h1>
-          <p><input type="text" placeholder="Email" v-model="email" /></p>
-          <p><input type="password" placeholder="Password" v-model="password" /></p>
-          <p><button @click="register">Submit</button></p>
+          <div class="txt_field">
+            <p><input type="text" placeholder="Email" v-model="email" /></p>
+            <hr>
+          </div>
+          <div class="txt_field">
+            <p><input type="password" placeholder="Password" v-model="password" /></p>
+            <hr>
+          </div>
+          <p><button @click="register">Register</button></p>
           <div class="signup_link">
                   Have an Account ? <a href="/login">Login Here</a>
               </div>
