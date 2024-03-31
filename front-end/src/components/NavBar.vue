@@ -1,15 +1,4 @@
 <template>
-    <!-- <div class="nav-bar">
-        <router-link to="/home">
-            <div class="logo-wrap">
-            <img :src="logo"/>
-        </div>
-        </router-link>
-        <router-link to="/library">
-            <button>My Library</button>
-        </router-link>
-    </div> -->
-    <!-- <img class="logo" :src="logo" alt="logo"/> -->
     <nav class="nav-bar">
         <ul class="nav__links">
             <router-link to="/home">
@@ -22,23 +11,48 @@
                 <li>My Library</li>
             </router-link>
         </ul>
-        <!-- Add Link to Sign Up/Sign in Page -->
-    <a class="cta" href="./login">
-        <button>Sign In</button>
-    </a>
+        <div>
+            <button v-if="isLoggedIn" style="background-color: red;" @click="handleSignOut">Sign Out</button>
+            <a v-else href="./login">
+                <button>Sign In</button>
+            </a>
+        </div>
     </nav>
-    
 </template>
 
 <script>
 import logo from '@/assets/logo.png';
+import { onMounted, ref } from 'vue';
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { useRouter } from 'vue-router';
 
-export default{
+export default {
     name: "NavBar",
-    data(){
-        return{
-            logo,
-        }
+    data() {
+        return {
+            logo
+        };
+    },
+    setup() {
+        const isLoggedIn = ref(false);
+        const router = useRouter();
+        let auth;
+
+        onMounted(() => {
+            auth = getAuth();
+            onAuthStateChanged(auth, (user) => {
+                isLoggedIn.value = !!user;
+            });
+        });
+
+        const handleSignOut = () => {
+            signOut(auth).then(() => {
+                console.log("Signed Out Success");
+                router.push('/home');
+            });
+        };
+
+        return { isLoggedIn, handleSignOut };
     }
-}
+};
 </script>
