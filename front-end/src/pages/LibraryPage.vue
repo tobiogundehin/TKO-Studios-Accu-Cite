@@ -50,7 +50,6 @@ export default {
             const response = await axios.delete(`/api/users/12345/library/${entryId}`);
             const updatedLibrary = response.data;
             this.libraryItems = updatedLibrary;
-            window.location.reload();
         }
     },
    async created(){

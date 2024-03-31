@@ -16,12 +16,6 @@
         
     </div>
     <div>
-    <router-link :to="{ path: '/search/' + this.$route.params.entryId + '/editEntryPage'}">
-	<button @click="editEntry" class="details-button">Update Entry</button>
-    </router-link>
-    </div>
-
-    <div>
         <router-link :to="'/search/'">
             <button @click="removefromLibrary" class="details-button" style="background-color: red;">DELETE ENTRY</button>
             </router-link>
@@ -42,13 +36,8 @@ export default{
         methods:{
             async addtoLibrary(){
                 await axios.post(`/api/users/12345/library`, {id: this.$route.params.entryId});
-                alert('Successfully added to Library');
+                alert('Successfully added to Library')
             },
-            async editEntry(){
-                await axios.update(`/api/search/${this.$route.params.entryId}`);
-                alert('Successfully Updated entry');
-                window.location.href = "/search";
-            }, 
             async removefromLibrary(){
                 await axios.delete(`/api/search/${this.$route.params.entryId}`);
                 alert('Successfully Deleted Entry');

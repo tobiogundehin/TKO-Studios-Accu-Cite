@@ -7,7 +7,7 @@
               <div class="txt_field">
                   <input type="text" name="text" required>
                   <span></span>
-                  <label>Email</label>
+                  <label>Username</label>
               </div>
               <div class="txt_field">
                   <input type="password" name="password" required>
