@@ -35,7 +35,6 @@ export default{
         },
         methods:{
             async addtoLibrary(){
-<<<<<<< HEAD
                 await axios.post(`http://localhost:8000/api/users/12345/library`, {id: this.$route.params.entryId});
                 alert('Successfully added to Library');
             },
@@ -44,11 +43,6 @@ export default{
                 alert('Successfully Updated entry');
                 window.location.href = "/search";
             }, 
-=======
-                await axios.post(`/api/users/12345/library`, {id: this.$route.params.entryId});
-                alert('Successfully added to Library')
-            },
->>>>>>> 573fa9a0dbf859dc0ae4197527141664a0d1d83e
             async removefromLibrary(){
                 await axios.delete(`http://localhost:8000/api/search/${this.$route.params.entryId}`);
                 alert('Successfully Deleted Entry');

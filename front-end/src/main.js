@@ -9,9 +9,19 @@ import HomePage from './pages/HomePage.vue'
 import LoginPage from './pages/LoginPage.vue'
 import SignupPage from './pages/SignupPage.vue'
 import CreateEntryPage from './pages/CreateEntryPage.vue'
+import { initializeApp} from "firebase/app";
 
-
-// Function to check if the user is logged in
+const firebaseConfig = {
+    apiKey: "AIzaSyBrs9eYqifDe1KqAzgPBXjM0LLSRQlLRds",
+    authDomain: "accu-cite-eb5a4.firebaseapp.com",
+    projectId: "accu-cite-eb5a4",
+    storageBucket: "accu-cite-eb5a4.appspot.com",
+    messagingSenderId: "1018716575610",
+    appId: "1:1018716575610:web:1e900cfd551311ae0428c3",
+    measurementId: "G-MNPZCS0M15"
+  };
+  
+initializeApp(firebaseConfig);
 
 //Router to manage page pathing
 createApp(App)
