@@ -31,7 +31,7 @@ export default{
         }
     },
     async created(){
-       const response = await axios.get('/api/search');
+       const response = await axios.get('http://localhost:8000/api/search');
        const entries = response.data;
        this.entries = entries;
     }

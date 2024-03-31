@@ -47,14 +47,14 @@ export default {
     },
     methods: {
         async removeFromLibrary(entryId){
-            const response = await axios.delete(`/api/users/12345/library/${entryId}`);
+            const response = await axios.delete(`http://localhost:8000/api/users/12345/library/${entryId}`);
             const updatedLibrary = response.data;
             this.libraryItems = updatedLibrary;
             window.location.reload();
         }
     },
    async created(){
-            const response = await axios.get('/api/users/12345/library');
+            const response = await axios.get('http://localhost:8000/api/users/12345/library');
             const libraryItems = response.data;
             this.libraryItems = libraryItems;
         },

@@ -41,22 +41,22 @@ export default{
         },
         methods:{
             async addtoLibrary(){
-                await axios.post(`/api/users/12345/library`, {id: this.$route.params.entryId});
+                await axios.post(`http://localhost:8000/api/users/12345/library`, {id: this.$route.params.entryId});
                 alert('Successfully added to Library');
             },
             async editEntry(){
-                await axios.update(`/api/search/${this.$route.params.entryId}`);
+                await axios.update(`http://localhost:8000/api/search/${this.$route.params.entryId}`);
                 alert('Successfully Updated entry');
                 window.location.href = "/search";
             }, 
             async removefromLibrary(){
-                await axios.delete(`/api/search/${this.$route.params.entryId}`);
+                await axios.delete(`http://localhost:8000/api/search/${this.$route.params.entryId}`);
                 alert('Successfully Deleted Entry');
                 window.location.href = "/search";
             }
         },
         async created(){
-            const response = await axios.get(`/api/search/${this.$route.params.entryId}`);
+            const response = await axios.get(`http://localhost:8000/api/search/${this.$route.params.entryId}`);
             const entry = response.data;
             this.entry = entry[0];
         }
