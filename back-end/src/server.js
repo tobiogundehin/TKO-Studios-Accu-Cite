@@ -51,6 +51,27 @@ app.get('/hello', (req, res) =>{
     res.send('Hello!');
 });
 
+app.get('/api/users/:email', (req, res) => {
+  const email = req.params.email;
+
+  const sqlGetUserByEmail = "SELECT * FROM Users WHERE email = ?";
+  con.query(sqlGetUserByEmail, [email], (err, result) => {
+    if (err) {
+      console.error("Error fetching user by email:", err);
+      res.status(500).json({ error: "Internal server error" });
+      return;
+    }
+
+    if (result.length === 0) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    const user = result[0];
+    res.json(user);
+  });
+});
+
 app.get('/api/search', (req,res) =>{
     const sqlGet = "SELECT * FROM entries";
     con.query(sqlGet, [], (err, result) => {
@@ -102,18 +123,66 @@ app.delete('/api/search/:entryId',(req,res)=>{
   })
 }); 
 
-// Show User Library, populated from the id of items in library
-app.get('/api/users/:userId/library',async (req,res)=>{
-  let new_array = [];
-  for (let x = 0; x < libraryItems.length; x++){
-    con.query("SELECT * FROM entries WHERE id = ?", libraryItems[x],(err, result) => {
-      new_array.push(result);
-      if (x === libraryItems.length - 1){
-        res.json(new_array);
+// Show User Library, populated from the libraryItems field of the user
+app.get('/api/users/:userEmail/library', async (req, res) => {
+  const userEmail = req.params.userEmail;
+
+  const sqlGetUserId = "SELECT user_id FROM Users WHERE email = ?";
+  con.query(sqlGetUserId, [userEmail], (err, rows) => {
+    if (err) {
+      console.error("Error fetching user's ID:", err);
+      res.status(500).json({ error: "Internal server error" });
+      return;
+    }
+
+    if (rows.length === 0) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    const userId = rows[0].user_id;
+
+    // Query the database to fetch the user's library items based on the userId
+    const sqlGetUserLibraryItems = "SELECT libraryItems FROM Users WHERE user_id = ?";
+    con.query(sqlGetUserLibraryItems, [userId], (err, rows) => {
+      if (err) {
+        console.error("Error fetching user's library items:", err);
+        res.status(500).json({ error: "Internal server error" });
+        return;
       }
-    })
-  }
+
+      if (rows.length === 0) {
+        res.json([]); // Return an empty array if the user has no library items
+        return;
+      }
+
+      const userLibraryItems = rows[0].libraryItems;
+      const cleanLibraryItems = userLibraryItems.replace(/[\[\]']+/g, '').trim();
+
+      // If user has no library items, return an empty array
+      if (!userLibraryItems || userLibraryItems.length === 0) {
+        res.json([]);
+        return;
+      }
+
+      // Query the entries table to fetch the details of library items
+      const sqlGetLibraryItems = "SELECT * FROM entries WHERE id IN (?)";
+      const libraryItemIds = cleanLibraryItems.split(',').map(id => parseInt(id.trim(), 10));
+
+      con.query(sqlGetLibraryItems, [libraryItemIds], (err, results) => {
+        if (err) {
+          console.error("Error fetching library items:", err);
+          res.status(500).json({ error: "Internal server error" });
+          return;
+        }
+        res.json(results);
+      });
+    });
   });
+});
+
+
+
 
 // app.get('/api/search/:entryId',(req,res)=>{
 //     const entryId = req.params.entryId;

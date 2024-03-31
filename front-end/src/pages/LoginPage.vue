@@ -11,7 +11,7 @@
             <p><input type="password" placeholder="Password" v-model="password" /></p>
             <hr>
           </div>
-            <p v-if="errMsg">{{ errMsg }}</p>
+            <p v-if="errMsg">{{ errMsg.value }}</p>
               <!-- Add Forgot Password Func -->
               <div class="pass">Forget Password?</div>
               <p><button @click="login">Login</button></p>
@@ -26,20 +26,29 @@
 import { ref } from 'vue';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from 'vue-router';
+import axios from 'axios';
 
-export default{
-    name:"LoginPage",
-    setup() {
+export default {
+  name: "LoginPage",
+  setup() {
     const email = ref("");
     const password = ref("");
     const router = useRouter();
-    const errMsg = ref() //Error Message
+    const errMsg = ref(""); // Error Message
 
     const login = () => {
       signInWithEmailAndPassword(getAuth(), email.value, password.value)
-        .then(() => {
+        .then(async () => {
           console.log("Successfully Signed In!");
-          router.push('/home');
+          // Fetch user's first name based on email
+          try {
+            const response = await axios.get(`http://localhost:8000/api/users/${email.value}`);
+            const user = response.data;
+            localStorage.setItem('userFirstName', user.first_name); // Store user's first name
+            router.push('/home');
+          } catch (error) {
+            console.error("Error fetching user's first name:", error);
+          }
         })
         .catch((error) => {
           console.log(error.code);
@@ -67,7 +76,7 @@ export default{
       // Implement Google sign-in logic here
     };
 
-    return { email, password, login, signInWithGoogle };
+    return { email, password, login, signInWithGoogle, errMsg };
   },
 };
 </script>

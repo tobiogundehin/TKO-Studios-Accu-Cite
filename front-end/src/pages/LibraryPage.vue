@@ -2,7 +2,7 @@
     <div>
         <h1>My Library</h1>
         <div>
-            <router-link to="/createentry" >
+            <router-link to="/createentry">
                 <button class="create-entry">Create Entry</button>
             </router-link>
         </div>
@@ -18,44 +18,67 @@
                 </thead>
                 <tbody>
                     <tr v-for="entry in libraryItems" :key="entry.id">
-                        <td>{{ entry[0].First }} {{ entry[0].Middle }} {{  entry[0].Last }}</td>
-                        <td>{{ entry[0].year }}</td>
-                        <router-link :to="'/search/'+ entry[0].id">
-                            <td>{{ entry[0].title }}</td>
+                        <td>{{ entry.First }} {{ entry.Middle }} {{ entry.Last }}</td>
+                        <td>{{ entry.year }}</td>
+                        <router-link :to="'/search/' + entry.id">
+                            <td>{{ entry.title }}</td>
                         </router-link>
-                        <td><button @click="removeFromLibrary(entry[0].id)">Remove</button></td>
+                        <td><button @click="removeFromLibrary(entry.id)">Remove</button></td>
                     </tr>
-                </tbody>    
+                </tbody>
             </table>
         </div>
 
-        <div v-if="libraryItems.length === 0">
+        <div v-else>
             You have no entries in your Library
         </div>
     </div>
 </template>
 
 <script>
+import { onMounted, ref } from 'vue';
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 export default {
     name: "LibraryPage",
-    data() {
-        return {
-            libraryItems: {},
+    setup() {
+        const isLoggedIn = ref(false);
+        const libraryItems = ref([]); // Define libraryItems as a ref array
+        const router = useRouter();
+        let auth;
+
+        onMounted(() => {
+            auth = getAuth();
+            onAuthStateChanged(auth, (user) => {
+                isLoggedIn.value = !!user;
+                if (user) {
+                    const userEmail = user.email; // Get the email of the logged-in user
+                    // Fetch user's library items from the backend using the user's email
+                    axios.get(`http://localhost:8000/api/users/${userEmail}/library`)
+                        .then(response => {
+                            libraryItems.value = response.data; // Set the libraryItems
+                        })
+                        .catch(error => {
+                            console.error("Error fetching user's library:", error);
+                        });
+                }
+            });
+        });
+
+        // const removeFromLibrary = (entryId) => {
+        //     // Implement remove functionality
+        // };
+
+        const handleSignOut = () => {
+            signOut(auth).then(() => {
+                console.log("Signed Out Success");
+                router.push('/home');
+            });
         };
-    },
-    methods: {
-        async removeFromLibrary(entryId){
-            const response = await axios.delete(`http://localhost:8000/api/users/12345/library/${entryId}`);
-            const updatedLibrary = response.data;
-            this.libraryItems = updatedLibrary;
-        }
-    },
-   async created(){
-            const response = await axios.get('http://localhost:8000/api/users/12345/library');
-            const libraryItems = response.data;
-            this.libraryItems = libraryItems;
-        },
+
+        return { isLoggedIn, libraryItems, handleSignOut };
+    }
 };
 </script>

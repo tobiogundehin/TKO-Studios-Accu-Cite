@@ -12,6 +12,7 @@
             </router-link>
         </ul>
         <div>
+            <span v-if="isLoggedIn">{{ userEmail }}</span>
             <button v-if="isLoggedIn" style="background-color: red;" @click="handleSignOut">Sign Out</button>
             <a v-else href="./login">
                 <button>Sign In</button>
@@ -35,6 +36,7 @@ export default {
     },
     setup() {
         const isLoggedIn = ref(false);
+        const userEmail = ref("");
         const router = useRouter();
         let auth;
 
@@ -42,6 +44,9 @@ export default {
             auth = getAuth();
             onAuthStateChanged(auth, (user) => {
                 isLoggedIn.value = !!user;
+                if (user) {
+                    userEmail.value = user.email; // Get the user's email
+                }
             });
         });
 
@@ -52,7 +57,7 @@ export default {
             });
         };
 
-        return { isLoggedIn, handleSignOut };
+        return { isLoggedIn, userEmail, handleSignOut };
     }
 };
 </script>
