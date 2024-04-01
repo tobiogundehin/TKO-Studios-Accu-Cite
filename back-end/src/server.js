@@ -181,9 +181,6 @@ app.get('/api/users/:userEmail/library', async (req, res) => {
   });
 });
 
-
-
-
 // app.get('/api/search/:entryId',(req,res)=>{
 //     const entryId = req.params.entryId;
 //     const entry = entries.find(entry => entry.id === entryId);
@@ -191,24 +188,69 @@ app.get('/api/users/:userEmail/library', async (req, res) => {
 // });
 
 // Add Items to User Library
-app.post('/api/users/:userId/library', (req,res) =>{
-  const entryId = req.body.id;
-  if (!libraryItems.includes(entryId)) {
-      libraryItems.push(entryId);
-  }
-  res.end();
-})
+app.post('/api/users/:userEmail/library', (req, res) => {
+  const userEmail = req.params.userEmail;
+  const entryId = parseInt(req.body.id); // Parse entry ID as a number
 
-app.delete('/api/users/:userId/library/:entryId', (req, res) => {
-  const entryId = req.params.entryId;
-  const index = libraryItems.indexOf(entryId);
-  if (index !== -1) {
-      libraryItems.splice(index, 1);
-      res.sendStatus(204);
-  } else {
-      res.status(404).json({ message: "Entry not found" });
+  if (isNaN(entryId)) {
+    res.status(400).json({ error: "Invalid entry ID" });
+    return;
   }
+
+  // Update the user's libraryItems field in the database with the new entry ID
+  const sql = `
+    UPDATE users
+    SET libraryItems = JSON_ARRAY_APPEND(
+      IFNULL(libraryItems, JSON_ARRAY()),
+      '$',
+      ?
+    )
+    WHERE email = ?
+  `;
+
+  con.query(sql, [entryId, userEmail], (err, result) => {
+    if (err) {
+      console.error("Error adding entry to library:", err);
+      res.status(500).json({ error: "Internal server error" });
+      return;
+    }
+    // Send a success response
+    res.json({ message: "Entry added to library successfully" });
+  });
 });
+
+
+app.delete('/api/users/:userEmail/library/:entryId', (req, res) => {
+  const userEmail = req.params.userEmail;
+  const entryIdToRemove = req.params.entryId;
+
+  // Construct the SQL query to remove the entryId from the libraryItems array
+  const sql = `
+    UPDATE users
+    SET libraryItems = JSON_REMOVE(
+      IF(
+        JSON_CONTAINS(libraryItems, ?),
+        libraryItems,
+        '[]'
+      ),
+      JSON_UNQUOTE(JSON_SEARCH(libraryItems, 'one', ?))
+    )
+    WHERE email = ?
+  `;
+
+  // Execute the SQL query
+  con.query(sql, [entryIdToRemove.toString(), entryIdToRemove.toString(), userEmail], (err, result) => {
+    if (err) {
+      console.error('Error removing entry from library:', err);
+      res.status(500).json({ error: 'Internal server error' });
+      return;
+    }
+    console.log('Entry removed from library successfully');
+    res.sendStatus(204); // Send success status
+  });
+});
+
+
 
 // ACCOUNT CREATION
 app.post('/api/users', (req, res) => {
