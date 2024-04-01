@@ -57,12 +57,12 @@
 import axios from 'axios';
 
 export default {
-    name: "EditEntry",
+    name: "editEntryPage",
     data() {
         return {
             errorList: '',
             model: {
-                entry:  {
+                entry: {
                     title: '',
                     Last: '',
                     First: '',
@@ -80,13 +80,12 @@ export default {
        this.getEntryData(this.$route.params.entryId);
     },
     methods: {
-
-        getEntryData(dummy){
-            axios.get(`http://localhost:8080/api/search/${dummy}/editEntryPage`)
+        getEntryData(entryId){
+            axios.get(`http://localhost:8080/api/search/${entryId}/editEntryPage`)
             .then(res => {
-                console.log(res.data.entry);
+                console.log(res.data);
 
-                this.model.entry = res.data.model.entry;
+                this.model.entry.First = res.data.entry;
         });
     },
         async submitForm() {
