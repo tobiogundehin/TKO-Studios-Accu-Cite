@@ -44,11 +44,6 @@ export default{
                 await axios.post(`/api/users/12345/library`, {id: this.$route.params.entryId});
                 alert('Successfully added to Library')
             },
-         /*   async editEntry(){
-                await axios.update(`http://localhost:8000/api/search/${this.$route.params.entryId}`);
-                alert('Successfully Updated entry');
-                window.location.href = "/search";
-            }, */
             async removefromLibrary(){
                 await axios.delete(`/api/search/${this.$route.params.entryId}`);
                 alert('Successfully Deleted Entry');

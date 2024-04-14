@@ -112,6 +112,25 @@ app.get('/api/search/:entryId/editEntryPage',(req,res)=>{
   })
 });
 
+app.put('/api/search/:entryId/editEntryPage',(req,res)=>{
+  const entryId = req.params.entryId;
+  const title = req.body.title;
+  const Last = req.body.Last;
+  const First = req.body.First;
+  const Middle = req.body.Middle;
+  const year = req.body.year;
+  const publisher = req.body.publisher;
+  const format = req.body.format;
+  const summary = req.body.summary;
+  const sqlUpdate = "UPDATE entries SET title = ?, Last = ?, First = ?, Middle = ?, year = ?, publisher = ?, format = ?, summary = ? WHERE id = ?";
+  //const sqlGet = "SELECT * FROM entries"; 
+  con.query(sqlUpdate, [title, Last, First, Middle, year, publisher, format, summary, entryId], (err, result) => {
+    //con.query(sqlGet, [], (err, result) => {
+    res.json(result);
+   // })
+  })
+});
+
 app.delete('/api/search/:entryId',(req,res)=>{
   const entryId = req.params.entryId;
   const sqlGet = "SELECT * FROM entries";
