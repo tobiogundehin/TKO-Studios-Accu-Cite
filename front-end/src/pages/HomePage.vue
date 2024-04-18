@@ -6,7 +6,7 @@
       <div class="product-container">
         <img src="../assets/Minimal book Logo.jpg">
         <div class="details-wrap">
-          <h2>Research</h2>
+          <h2>Research Lives Here</h2>
         </div>
       </div>
     </div>

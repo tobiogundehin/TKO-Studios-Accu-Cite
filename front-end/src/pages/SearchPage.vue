@@ -1,6 +1,10 @@
 <!-- Page the User is Redirected to after Selecting Search on any Page -->
 <template>
-    <h1>Search</h1>
+    <div class="search">
+        <input type="text" id="searchbar" placeholder="SEARCH" name="searchbar">
+        <button id="searchbutton"><img src="../assets/search.png"></button>
+    </div>
+    
     <div class="grid-wrap">
         <div 
         class="article-item"
