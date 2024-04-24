@@ -9,7 +9,7 @@
                 <button class="create-entry">Create Entry (DOI)</button>
             </router-link>
             <router-link to="/createentryisbn">
-                <button class="create-entry">Create Entry (ISBN)</button>
+                <button class="create-entry">Create Entry (ISBN )</button>
             </router-link>
         </div>
         <div v-if="libraryItems.length > 0">

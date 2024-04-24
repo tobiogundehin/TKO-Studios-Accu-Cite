@@ -181,12 +181,6 @@ app.get('/api/users/:userEmail/library', async (req, res) => {
   });
 });
 
-// app.get('/api/search/:entryId',(req,res)=>{
-//     const entryId = req.params.entryId;
-//     const entry = entries.find(entry => entry.id === entryId);
-//     res.json(entry);
-// });
-
 // Add Items to User Library
 app.post('/api/users/:userEmail/library', (req, res) => {
   const userEmail = req.params.userEmail;
@@ -219,36 +213,14 @@ app.post('/api/users/:userEmail/library', (req, res) => {
   });
 });
 
-
+// Define the DELETE endpoint
 app.delete('/api/users/:userEmail/library/:entryId', (req, res) => {
   const userEmail = req.params.userEmail;
-  const entryIdToRemove = req.params.entryId;
+  const entryId = req.params.entryId;
 
-  // Construct the SQL query to remove the entryId from the libraryItems array
-  const sql = `
-    UPDATE users
-    SET libraryItems = JSON_REMOVE(
-      IF(
-        JSON_CONTAINS(libraryItems, ?),
-        libraryItems,
-        '[]'
-      ),
-      JSON_UNQUOTE(JSON_SEARCH(libraryItems, 'one', ?))
-    )
-    WHERE email = ?
-  `;
+  
+})
 
-  // Execute the SQL query
-  con.query(sql, [entryIdToRemove.toString(), entryIdToRemove.toString(), userEmail], (err, result) => {
-    if (err) {
-      console.error('Error removing entry from library:', err);
-      res.status(500).json({ error: 'Internal server error' });
-      return;
-    }
-    console.log('Entry removed from library successfully');
-    res.sendStatus(204); // Send success status
-  });
-});
 
 
 
