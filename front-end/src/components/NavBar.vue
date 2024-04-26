@@ -21,6 +21,9 @@
             <router-link to="/library">
                 <li>My Library</li>
             </router-link>
+            <router-link to="/DOI">
+                <li>DOI Search</li>
+            </router-link>
         </ul>
         <!-- Add Link to Sign Up/Sign in Page -->
     <a class="cta" href="./login">

@@ -6,6 +6,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const Cite = require("citation-js")
 
 
 app.use(cors());
@@ -40,6 +41,11 @@ const con = mysql.createConnection({
   
 app.listen(8000, () => {
     console.log("Server is listening on port 8000")
+
+    const example = new Cite('10.1016/j.proeng.2011.08.552');
+
+    console.log(example.data[0]);
+
 })
 let libraryItems = libraryItemsRaw;
 // let entries = entriesRaw;
@@ -77,7 +83,6 @@ app.get('/api/search', (req,res) =>{
     con.query(sqlGet, [], (err, result) => {
         res.json(result );
     })
-    
 });
 
 app.post('/api/createentry', (req,res)=> {
@@ -92,6 +97,26 @@ app.post('/api/createentry', (req,res)=> {
   const sqlInsert = "INSERT INTO entries (title, Last, First, Middle, year, publisher, format, summary) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
   const sqlGet = "SELECT * FROM entries"; 
   con.query(sqlInsert, [title, Last, First, Middle, year, publisher, format, abstract], (err, result) => {
+    con.query(sqlGet, [], (err, result) => {
+      res.json(result);
+  })
+    })
+});
+
+app.post('/api/DOI', (req,res)=> {
+  const title = req.body.title;
+ // const Last = req.body.Last;
+  //const First = req.body.First;
+  //const Middle = req.body.Middle;
+  const author = req.body.author;
+  const year = req.body.year;
+  const publisher = req.body.publisher;
+  const format = req.body.format;
+  const abstract = req.body.abstract;
+  const doi = req.body.doi;
+  const sqlInsert = "INSERT INTO entries (title, year, publisher, format, summary, authors, doi) VALUES (?, ?, ?, ?, ?, ?, ?)";
+  const sqlGet = "SELECT * FROM entries"; 
+  con.query(sqlInsert, [title, year, publisher, format, abstract, author, doi], (err, result) => {
     con.query(sqlGet, [], (err, result) => {
       res.json(result);
   })
@@ -229,7 +254,7 @@ app.delete('/api/users/:userId/library/:entryId', (req, res) => {
   }
 });
 
-/* ACCOUNT CREATION
+//ACCOUNT CREATION
 app.post('/api/users', (req, res) => {
   const { first_name, last_name, email, libraryItems } = req.body.newUser;
 
@@ -302,4 +327,4 @@ app.delete('/api/users/:userId', (req, res) => {
       res.status(204).json({ message: "User deleted successfully" });
     });
   });
-}); */
+});

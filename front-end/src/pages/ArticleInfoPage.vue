@@ -26,10 +26,24 @@
             <button @click="removefromLibrary" class="details-button" style="background-color: red;">DELETE ENTRY</button>
             </router-link>
     </div>
-    
+    <div class="dropdown">
+  <button @click="selectStyle" class="dropbtn">Select Style</button>
+  <div id="myDropdown" class="dropdown-content">
+    <a @click="setStyle" id="APA" href="#">APA</a>
+    <a @click="setStyle" id="MLA" href="#">MLA</a>
+    <a @click="setStyle" id="Chi" href="#">Chicago</a>
+  </div>
+</div>
+    <div>
+            <button @click="createCite" class="details-button" style="background-color: blue;">Cite</button>
+    </div>
+    <div>
+        <p id="demo" class="citation"> </p> 
+    </div>
 </template>
 
 <script>
+const Cite = require("citation-js")
 import axios from 'axios';
 
 export default{
@@ -48,12 +62,51 @@ export default{
                 await axios.delete(`/api/search/${this.$route.params.entryId}`);
                 alert('Successfully Deleted Entry');
                 window.location.href = "/search";
+            },
+            async createCite(){
+                console.log("Hello World!");
+                //toggleText();
+
+                const example = new Cite('10.1016/0009-2541(94)00140-4');
+                //const example = new Cite('this.$route.params.entryId');
+
+
+                console.log(example.data[0]);
+                document.getElementById("demo").innerHTML = example.format('bibliography', {
+                    format: 'html',
+                    template: 'apa'
+                });
+
+
+                //var text = document.getElementById("textField");
+                //text.style.display = "block";
+            },
+            toggleText(){
+                var text = document.getElementById("demo");
+                if (text.style.display === "none") {
+                text.style.display = "block";
+                } else {
+                text.style.display = "none";
+                }
+            },
+        selectStyle(){
+            document.getElementById("myDropdown").classList.toggle("show");
+            window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                 if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                    }
+                 }
             }
-        },
-        async created(){
-            const response = await axios.get(`/api/search/${this.$route.params.entryId}`);
-            const entry = response.data;
-            this.entry = entry[0];
         }
+    },
+    setStyle(){
+        console.log("Hello World");
+    },
+    }
 }
 </script>

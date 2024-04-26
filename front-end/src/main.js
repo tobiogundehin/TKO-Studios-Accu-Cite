@@ -10,8 +10,21 @@ import LoginPage from './pages/LoginPage.vue'
 import SignupPage from './pages/SignupPage.vue'
 import CreateEntryPage from './pages/CreateEntryPage.vue'
 import EditEntryPage from './pages/EditEntryPage.vue';
-//import { initializeApp} from "firebase/app";
+import DOIPage from './pages/DOISearch.vue';
+import { initializeApp} from "firebase/app";
 
+const firebaseConfig = {
+    apiKey: "AIzaSyBrs9eYqifDe1KqAzgPBXjM0LLSRQlLRds",
+    authDomain: "accu-cite-eb5a4.firebaseapp.com",
+    projectId: "accu-cite-eb5a4",
+    storageBucket: "accu-cite-eb5a4.appspot.com",
+    messagingSenderId: "1018716575610",
+    appId: "1:1018716575610:web:1e900cfd551311ae0428c3",
+    measurementId: "G-MNPZCS0M15"
+};
+
+
+initializeApp(firebaseConfig);
 
 // Function to check if the user is logged in
 
@@ -44,6 +57,10 @@ createApp(App)
     },{
         path:'/search/:entryId/editEntryPage',
         component: EditEntryPage,
-    }]
+    },{
+        path:'/DOI',
+        component: DOIPage,
+    },
+]
 }))
 .mount('#app')

@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "@citation-js/plugin-csl": "^0.7.9",
     "axios": "^1.6.7",
+    "citation-js": "^0.7.10",
     "mysql": "^2.18.1"
   }
 }
