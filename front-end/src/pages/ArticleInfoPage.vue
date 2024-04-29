@@ -35,7 +35,7 @@
   </div>
 </div>
     <div>
-            <button @click="createCite" class="details-button" style="background-color: blue;">Cite</button>
+            <button @click="createCite(this.$route.params.entryId)" class="details-button" style="background-color: blue;">Cite</button>
     </div>
     <div>
         <p id="demo" class="citation"> </p> 
@@ -53,6 +53,10 @@ export default{
                 entry: [],
             }  
         },
+        mounted(){
+       console.log(this.$route.params.entryId);
+       this.getEntryData(this.$route.params.entryId);
+    },
         methods:{
             async addtoLibrary(){
                 await axios.post(`/api/users/12345/library`, {id: this.$route.params.entryId});
@@ -63,24 +67,37 @@ export default{
                 alert('Successfully Deleted Entry');
                 window.location.href = "/search";
             },
-            async createCite(){
-                console.log("Hello World!");
-                //toggleText();
+            async createCite(entryId){
+                axios.get(`/api/search/${entryId}`)
+            .then(res => {
+                //console.log(res.doi);
 
-                const example = new Cite('10.1016/0009-2541(94)00140-4');
-                //const example = new Cite('this.$route.params.entryId');
+                const myDOI = res.data[0].doi;
+                const example = new Cite(myDOI);
 
-
-                console.log(example.data[0]);
+                console.log(example);
                 document.getElementById("demo").innerHTML = example.format('bibliography', {
                     format: 'html',
                     template: 'apa'
                 });
+            })
+        },
+            getEntryData(entryId){
+            axios.get(`http://localhost:8080/api/search/${entryId}/editEntryPage`)
+            .then(res => {
+                console.log(res.data[0]);
 
+                this.Model.Entry = res.data[0];
 
-                //var text = document.getElementById("textField");
-                //text.style.display = "block";
-            },
+        })
+        .catch(function (error){
+            if(error.response){
+                if(error.response.status == 404){
+                    alert(error.response.data.message);
+                }
+            }
+        }); 
+    },
             toggleText(){
                 var text = document.getElementById("demo");
                 if (text.style.display === "none") {

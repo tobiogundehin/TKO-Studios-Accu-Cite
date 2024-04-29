@@ -10,7 +10,6 @@
       </div>
       <p class="output" id="output">Title: </p>
       <output class="output2" id="output2">Author: </output>
-      <output class="output3" id="output3"> Author: </output>
       <p class="output4" id="output4">Publisher: </p>
       <p class="output5" id="output5">Date: </p>
       <p class="output6" id="output6">Source Type: </p>
@@ -46,10 +45,8 @@ export default{
               const example = new Cite(form);
             await axios.post("./api/DOI", {
                 title: example.data[0].title,
-                Last: example.data[0].author[0].family,
-                First: example.data[0].author[0].given,
-                Middle: this.Middle,
-                year: this.year,
+                author: example.data[0].author[0].family,
+                year: example.data[0].created.date_parts,
                 publisher: example.data[0].publisher,
                 format: example.data[0].type,
                 abstract: this.abstract,
