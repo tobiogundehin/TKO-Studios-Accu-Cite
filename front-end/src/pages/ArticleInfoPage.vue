@@ -27,35 +27,41 @@
             </router-link>
     </div>
     <div class="dropdown">
-  <button @click="selectStyle" class="dropbtn">Select Style</button>
-  <div id="myDropdown" class="dropdown-content">
-    <a @click="setStyle" id="APA" href="#">APA</a>
-    <a @click="setStyle" id="MLA" href="#">MLA</a>
-    <a @click="setStyle" id="Chi" href="#">Chicago</a>
+  <!--<button  @click="selectStyle" @onChange="setStyle(this)" class="dropbtn">Select Style</button> -->
+  <button  @click="selectStyle(this)"  class="dropbtn">Select Style</button>
+  <div id="SelectStyle" class="dropdown-content">
+    <a @click="setStyle('APA')" id="APA" @href="setStyle(this)" value="APA">APA</a>
+    <a @click="setStyle('MLA')" id="MLA" @href="setStyle(this)" value="MLA">MLA</a>
+    <a @click="setStyle('Chicago')" id="Chi" @href="setStyle(this)" value="Chicago">Chicago</a>
+    <a @click="setStyle('Vancouver')" id="Van" @href="setStyle(this)" value="Vancouver">Vancouver</a>
+    <a @click="setStyle('Harvard1')" id="Van" @href="setStyle(this)" value="Harvard1">Harvard1</a>
   </div>
 </div>
     <div>
-            <button @click="createCite(this.$route.params.entryId)" class="details-button" style="background-color: blue;">Cite</button>
+            <button @click="createCite(this.$route.params.entryId, selectedStyle)" class="details-button" style="background-color: blue;">Cite</button>
     </div>
     <div>
-        <p id="demo" class="citation"> </p> 
+        <p id="citation" class="citation"> </p> 
     </div>
 </template>
 
 <script>
 const Cite = require("citation-js")
 import axios from 'axios';
+//var curStyle = document.getElementById('SelectStyle');
 
 export default{
         name: "ArticleInfoPage",
         data(){
             return{
                 entry: [],
+                selectedStyle: '',
             }  
         },
         mounted(){
        console.log(this.$route.params.entryId);
        this.getEntryData(this.$route.params.entryId);
+       //this.setStyle("APA");
     },
         methods:{
             async addtoLibrary(){
@@ -67,7 +73,7 @@ export default{
                 alert('Successfully Deleted Entry');
                 window.location.href = "/search";
             },
-            async createCite(entryId){
+            async createCite(entryId, selectedStyle){
                 axios.get(`/api/search/${entryId}`)
             .then(res => {
                 //console.log(res.doi);
@@ -75,11 +81,52 @@ export default{
                 const myDOI = res.data[0].doi;
                 const example = new Cite(myDOI);
 
-                console.log(example);
-                document.getElementById("demo").innerHTML = example.format('bibliography', {
+                //console.log(example);
+                console.log(selectedStyle);
+
+                switch(selectedStyle){
+                    case 'APA': {
+                //alert("APA Selected");
+                //console.log(example);
+                document.getElementById("citation").innerHTML = example.format('bibliography', {
                     format: 'html',
                     template: 'apa'
                 });
+                break;
+                }
+                case 'MLA': {
+                //alert("MLA Selected");
+                document.getElementById("citation").innerHTML = example.format('bibliography', {
+                    format: 'html',
+                    template: 'mla'
+                });
+                break;
+                }
+                case 'Chicago': {
+                //alert("Chicago Selected");
+                document.getElementById("citation").innerHTML = example.format('bibliography', {
+                    format: 'html',
+                    template: 'chicago'
+                });
+                break;
+                }
+                case 'Vancouver': {
+                //alert("Chicago Selected");
+                document.getElementById("citation").innerHTML = example.format('bibliography', {
+                    format: 'html',
+                    template: 'vancouver'
+                });
+                break;
+             }
+             case 'Harvard1': {
+                //alert("Chicago Selected");
+                document.getElementById("citation").innerHTML = example.format('bibliography', {
+                    format: 'html',
+                    template: 'harvard-cite-them-right'
+                });
+                break;
+             }
+            }
             })
         },
             getEntryData(entryId){
@@ -99,7 +146,7 @@ export default{
         }); 
     },
             toggleText(){
-                var text = document.getElementById("demo");
+                var text = document.getElementById("citation");
                 if (text.style.display === "none") {
                 text.style.display = "block";
                 } else {
@@ -107,7 +154,7 @@ export default{
                 }
             },
         selectStyle(){
-            document.getElementById("myDropdown").classList.toggle("show");
+            document.getElementById("SelectStyle").classList.toggle("show");
             window.onclick = function(event) {
             if (!event.target.matches('.dropbtn')) {
                 var dropdowns = document.getElementsByClassName("dropdown-content");
@@ -121,8 +168,46 @@ export default{
             }
         }
     },
-    setStyle(){
-        console.log("Hello World");
+    setStyle(curStyle){
+        switch (curStyle) {
+        case 'APA':  {
+          //document.getElementById("feelimg").src = "Images/questionSun.jpg";
+          document.getElementById("SelectStyle").value
+          alert("APA Selected");
+          this.selectedStyle = curStyle;
+          break;
+        }
+        case 'MLA': {
+          //document.getElementById("feelimg").src = "Images/happySun.jpg";
+          document.getElementById("SelectStyle").value
+          alert("MLA Selected");
+          this.selectedStyle = curStyle;
+          //return curStyle;
+          break;
+        }
+        case 'Chicago': {
+          //document.getElementById("feelimg").src = "Images/sadSun.jpg";
+          document.getElementById("SelectStyle").value
+          alert("Chicago Selected");
+          this.selectedStyle = curStyle;
+          break;
+        }
+        case 'Vancouver': {
+          //document.getElementById("feelimg").src = "Images/sadSun.jpg";
+          document.getElementById("SelectStyle").value
+          alert("Vancouver Selected");
+          this.selectedStyle = curStyle;
+          break;
+        }
+        case 'Harvard1': {
+          //document.getElementById("feelimg").src = "Images/sadSun.jpg";
+          document.getElementById("SelectStyle").value
+          alert("Harvard1 Selected");
+          this.selectedStyle = curStyle;
+          break;
+        }
+    }
+    return curStyle;
     },
     }
 }
