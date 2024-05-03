@@ -18,7 +18,7 @@ const mysql = require('mysql');
 const con = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'Dollars66.',
+    password: 'password',
     database: "full_stack",
   });
 
@@ -114,6 +114,25 @@ app.post('/api/createentry', (req, res) => {
       res.status(201).json({ message: 'Entry created successfully', entryId });
   });
 });
+
+app.post('/api/DOI', (req,res)=> {
+  const title = req.body.title;
+  const author = req.body.author;
+  const year = req.body.year;
+  const month = req.body.month;
+  const day = req.body.day;
+  const publisher = req.body.publisher;
+  const format = req.body.format;
+  const abstract = req.body.abstract;
+  const doi = req.body.doi;
+  const sqlInsert = "INSERT INTO entries (title, year, month, day, publisher, format, summary, doi, authors) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  const sqlGet = "SELECT * FROM entries"; 
+  con.query(sqlInsert, [title, year, month, day, publisher, format, abstract, doi, author], (err, result) => {
+    con.query(sqlGet, [], (err, result) => {
+      res.json(result);
+  })
+    })
+}); 
 
 app.get('/api/search/:entryId/editEntryPage',(req,res)=>{
   const entryId = req.params.entryId;

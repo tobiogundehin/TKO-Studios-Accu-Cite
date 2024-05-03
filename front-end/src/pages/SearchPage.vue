@@ -13,7 +13,7 @@
             <h3 class="article-name">{{ entry.title }}</h3>
             <p class="article-author">{{ entry.authors }}</p>
             <p class="article-summary">{{ entry.summary }}</p>
-            <p class="article-year">{{ entry.day }} {{ entry.month }} {{ entry.year }} - {{ entry.publisher }}</p>
+            <p class="article-year">{{ entry.day }}/{{ entry.month }}/{{ entry.year }} - {{ entry.publisher }}</p>
             <router-link :to="'/search/'+ entry.id">
                 <button class="details-button">View Details</button>
             </router-link>

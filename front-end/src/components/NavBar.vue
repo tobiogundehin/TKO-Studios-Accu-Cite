@@ -10,6 +10,9 @@
             <router-link to="/library">
                 <li>My Library</li>
             </router-link>
+            <router-link to="/DOI">
+                <li>DOI Search</li>
+            </router-link>
         </ul>
         <div>
             <span v-if="isLoggedIn"></span>
