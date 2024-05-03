@@ -9,6 +9,9 @@ import HomePage from './pages/HomePage.vue'
 import LoginPage from './pages/LoginPage.vue'
 import SignupPage from './pages/SignupPage.vue'
 import CreateEntryPage from './pages/CreateEntryPage.vue'
+import CreateEntryDoi from './pages/CreateEntryDoi.vue'
+import CreateEntryIsbn from './pages/CreateEntryIsbn.vue'
+
 import { initializeApp} from "firebase/app";
 
 const firebaseConfig = {
@@ -49,6 +52,12 @@ createApp(App)
     },{
         path:'/createentry',
         component: CreateEntryPage,
+    },{
+        path:'/createentrydoi',
+        component: CreateEntryDoi,
+    },{
+        path:'/createentryisbn',
+        component: CreateEntryIsbn,
     }]
 }))
 .mount('#app')

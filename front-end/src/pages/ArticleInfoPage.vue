@@ -3,8 +3,8 @@
     <div v-if="entry" class="article-details" >
         <h1>{{ entry.title }}</h1>
         <div>
-            <h3 class="article-author">{{ entry.First}} {{ entry.Middle }} {{  entry.Last }}</h3>
-            <h3 class="article-year">{{ entry.year }}</h3>
+            <h3 class="article-author">By: {{ entry.authors }}</h3>
+            <h3 class="article-year">{{ entry.day }} {{ entry.month }} {{ entry.year }}</h3>
         </div>
         <h2>Abstract</h2>
         <h3 class="article-summary">{{ entry.summary }}</h3>

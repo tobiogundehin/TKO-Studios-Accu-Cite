@@ -5,12 +5,18 @@
             <router-link to="/createentry">
                 <button class="create-entry">Create Entry</button>
             </router-link>
+            <router-link to="/createentrydoi">
+                <button class="create-entry">Create Entry (DOI)</button>
+            </router-link>
+            <router-link to="/createentryisbn">
+                <button class="create-entry">Create Entry (ISBN )</button>
+            </router-link>
         </div>
         <div v-if="libraryItems.length > 0">
             <table class="library-table">
                 <thead>
                     <tr>
-                        <th>AUTHOR</th>
+                        <th>AUTHOR(S)</th>
                         <th>YEAR</th>
                         <th>TITLE</th>
                         <th></th>
@@ -18,7 +24,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="entry in libraryItems" :key="entry.id">
-                        <td>{{ entry.First }} {{ entry.Middle }} {{ entry.Last }}</td>
+                        <td>{{ entry.authors}}</td>
                         <td>{{ entry.year }}</td>
                         <router-link :to="'/search/' + entry.id">
                             <td>{{ entry.title }}</td>
@@ -58,7 +64,11 @@ export default {
                     // Fetch user's library items from the backend using the user's email
                     axios.get(`http://localhost:8000/api/users/${userEmail}/library`)
                         .then(response => {
-                            libraryItems.value = response.data; // Set the libraryItems
+                            // Clean up the authors property by removing brackets
+                            libraryItems.value = response.data.map(entry => {
+                                entry.authors = entry.authors.replace(/^\[|\]$/g, '');
+                                return entry;
+                            });
                         })
                         .catch(error => {
                             console.error("Error fetching user's library:", error);
@@ -66,10 +76,6 @@ export default {
                 }
             });
         });
-
-        // const removeFromLibrary = (entryId) => {
-        //     // Implement remove functionality
-        // };
 
         const handleSignOut = () => {
             signOut(auth).then(() => {
@@ -81,4 +87,5 @@ export default {
         return { isLoggedIn, libraryItems, handleSignOut };
     }
 };
+
 </script>
