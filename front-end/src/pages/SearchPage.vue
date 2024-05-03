@@ -11,9 +11,9 @@
         :key="entry.id"
         >
             <h3 class="article-name">{{ entry.title }}</h3>
-            <p class="article-author">{{ entry.Last }} {{ entry.Middle }} {{ entry.First }}</p>
+            <p class="article-author">{{ entry.authors }}</p>
             <p class="article-summary">{{ entry.summary }}</p>
-            <p class="article-year">{{ entry.year }} - {{ entry.publisher }}</p>
+            <p class="article-year">{{ entry.day }} {{ entry.month }} {{ entry.year }} - {{ entry.publisher }}</p>
             <router-link :to="'/search/'+ entry.id">
                 <button class="details-button">View Details</button>
             </router-link>
@@ -42,10 +42,25 @@ export default {
         }
     },
     computed: {
-        filteredEntries() {
-            const query = this.searchQuery.toLowerCase().trim();
-            return this.entries.filter(entry => entry.title.toLowerCase().includes(query));
-        }
+    filteredEntries() {
+        // Convert the search query to lowercase and trim whitespace
+        const query = this.searchQuery.toLowerCase().trim();
+        
+        // Map over the entries to clean up authors and filter entries
+        return this.entries
+            .map(entry => {
+                // Clean up the authors by removing brackets
+                entry.authors = entry.authors.replace(/^\[|\]$/g, '');
+
+                // Return the entry if the title includes the query
+                if (entry.title.toLowerCase().includes(query)) {
+                    return entry;
+                }
+            })
+            // Filter out undefined entries (entries that did not match the query)
+            .filter(entry => entry !== undefined);
     }
+}
+
 }
 </script>

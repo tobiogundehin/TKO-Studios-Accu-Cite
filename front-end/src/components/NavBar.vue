@@ -12,7 +12,7 @@
             </router-link>
         </ul>
         <div>
-            <span v-if="isLoggedIn">{{ userEmail }}</span>
+            <span v-if="isLoggedIn"></span>
             <button v-if="isLoggedIn" style="background-color: red;" @click="handleSignOut">Sign Out</button>
             <a v-else href="./login">
                 <button>Sign In</button>

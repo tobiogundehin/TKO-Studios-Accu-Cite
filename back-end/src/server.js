@@ -72,40 +72,57 @@ app.get('/api/users/:email', (req, res) => {
   });
 });
 
-app.get('/api/search', (req,res) =>{
-    const sqlGet = "SELECT * FROM entries";
-    con.query(sqlGet, [], (err, result) => {
-        res.json(result );
-    })
-    
+app.get('/api/search', (req, res) => {
+  // SQL query to join entries with entry_authors and authors
+  const sqlGet = `
+      SELECT * FROM entries
+  `;
+
+  // Execute the query
+  con.query(sqlGet, [], (err, result) => {
+      if (err) {
+          // Handle any errors that may occur during the query
+          console.error('Error querying the database:', err);
+          res.status(500).json({ error: 'An error occurred while querying the database' });
+          return;
+      }
+
+      // Return the result as a JSON response
+      res.json(result);
+  });
 });
 
-app.post('/api/createentry', (req,res)=> {
-  const title = req.body.title;
-  const Last = req.body.Last;
-  const First = req.body.First;
-  const Middle = req.body.Middle;
-  const year = req.body.year;
-  const publisher = req.body.publisher;
-  const format = req.body.format;
-  const abstract = req.body.abstract;
-  const sqlInsert = "INSERT INTO entries (title, Last, First, Middle, year, publisher, format, summary) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-  const sqlGet = "SELECT * FROM entries"; 
-  con.query(sqlInsert, [title, Last, First, Middle, year, publisher, format, abstract], (err, result) => {
-    con.query(sqlGet, [], (err, result) => {
+
+app.post('/api/createentry', (req, res) => {
+  // Parse the request body to retrieve entry details
+  const { title, year, month, day, publisher, format, summary, authors } = req.body;
+
+  // Define the SQL query to insert a new entry
+  const sqlCreateEntry = `INSERT INTO entries (title, year, month, day, publisher, format, summary, authors) 
+                          VALUES (?, ?, ?, ?, ?, ?, ?, "[" ? "]")`;
+
+  // Execute the query with the provided entry details
+  con.query(sqlCreateEntry, [title, year, month, day, publisher, format, summary, authors], (err, result) => {
+      if (err) {
+          console.error('Error inserting entry:', err);
+          res.status(500).json({ error: 'Failed to create entry' });
+          return;
+      }
+
+      // Send a success response with the ID of the newly created entry
+      const entryId = result.insertId;
+      res.status(201).json({ message: 'Entry created successfully', entryId });
+  });
+});
+
+app.get('/api/search/:entryId/editEntryPage',(req,res)=>{
+  const entryId = req.params.entryId;
+  con.query("SELECT * FROM entries WHERE id = ?", entryId, (err, result) => {
       res.json(result);
   })
-    })
 });
 
 app.get('/api/search/:entryId',(req,res)=>{
-    const entryId = req.params.entryId;
-    con.query("SELECT * FROM entries WHERE id = ?", entryId, (err, result) => {
-        res.json(result);
-    })
-}); 
-
-app.get('/api/search/:entryId/editEntryPage',(req,res)=>{
   const entryId = req.params.entryId;
   con.query("SELECT * FROM entries WHERE id = ?", entryId, (err, result) => {
       res.json(result);
@@ -127,6 +144,7 @@ app.delete('/api/search/:entryId',(req,res)=>{
 app.get('/api/users/:userEmail/library', async (req, res) => {
   const userEmail = req.params.userEmail;
 
+  // Step 1: Fetch user ID based on user email
   const sqlGetUserId = "SELECT user_id FROM Users WHERE email = ?";
   con.query(sqlGetUserId, [userEmail], (err, rows) => {
     if (err) {
@@ -142,7 +160,7 @@ app.get('/api/users/:userEmail/library', async (req, res) => {
 
     const userId = rows[0].user_id;
 
-    // Query the database to fetch the user's library items based on the userId
+    // Step 2: Fetch the user's library items based on the user ID
     const sqlGetUserLibraryItems = "SELECT libraryItems FROM Users WHERE user_id = ?";
     con.query(sqlGetUserLibraryItems, [userId], (err, rows) => {
       if (err) {
@@ -157,7 +175,6 @@ app.get('/api/users/:userEmail/library', async (req, res) => {
       }
 
       const userLibraryItems = rows[0].libraryItems;
-      const cleanLibraryItems = userLibraryItems.replace(/[\[\]']+/g, '').trim();
 
       // If user has no library items, return an empty array
       if (!userLibraryItems || userLibraryItems.length === 0) {
@@ -165,13 +182,16 @@ app.get('/api/users/:userEmail/library', async (req, res) => {
         return;
       }
 
-      // Query the entries table to fetch the details of library items
-      const sqlGetLibraryItems = "SELECT * FROM entries WHERE id IN (?)";
+      // Clean and parse the library items
+      const cleanLibraryItems = userLibraryItems.replace(/[\[\]']+/g, '').trim();
       const libraryItemIds = cleanLibraryItems.split(',').map(id => parseInt(id.trim(), 10));
 
-      con.query(sqlGetLibraryItems, [libraryItemIds], (err, results) => {
+      // Step 3: Fetch the details of library items along with their associated authors
+      const sqlGetLibraryItemsWithAuthors = "SELECT * FROM entries WHERE id IN (?)";
+
+      con.query(sqlGetLibraryItemsWithAuthors, [libraryItemIds], (err, results) => {
         if (err) {
-          console.error("Error fetching library items:", err);
+          console.error("Error fetching library items with authors:", err);
           res.status(500).json({ error: "Internal server error" });
           return;
         }
@@ -180,6 +200,7 @@ app.get('/api/users/:userEmail/library', async (req, res) => {
     });
   });
 });
+
 
 // Add Items to User Library
 app.post('/api/users/:userEmail/library', (req, res) => {
@@ -217,8 +238,17 @@ app.post('/api/users/:userEmail/library', (req, res) => {
 app.delete('/api/users/:userEmail/library/:entryId', (req, res) => {
   const userEmail = req.params.userEmail;
   const entryId = req.params.entryId;
+  let initialLib = []
 
-  
+  const sql = `
+  SELECT libraryitems FROM users
+  WHERE email = ?
+  `;
+
+  con.query(sql, userEmail, (err, result) =>{
+    res.json(result);
+  })
+
 })
 
 
