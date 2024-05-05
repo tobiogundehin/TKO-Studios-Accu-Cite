@@ -24,7 +24,7 @@
 <script>
 import axios from 'axios';
 const Cite = require("citation-js");
-let entryData = new FormData();
+//let entryData = new FormData();
 export default{
     name: "CreateEntryPage",
     data() {
@@ -99,7 +99,7 @@ export default{
             let abstract = this.abstract;
             let doi = entry.data[0].DOI;
 
-            //let entryData = new FormData();
+            let entryData = new FormData();
             entryData.append('title', title);
             entryData.append('month', month);
             entryData.append('day', day);
@@ -109,6 +109,7 @@ export default{
             entryData.append('abstract', abstract);
             entryData.append('doi', doi);
             entryData.append('author', JSON.stringify(authors));
+            console.log(entryData);
             const headers = {
               'Content-Type' : 'application/json',
               'Accept' : 'application/json',
@@ -152,7 +153,7 @@ export default{
       document.getElementById("output2").innerHTML = JSON.stringify(authors);
       //document.getElementById("output2").innerHTML = example.data[0].author[0].family;
       document.getElementById("output4").innerHTML = entry.data[0].publisher;
-      document.getElementById("output5").innerHTML = entry.data[0]['published']['date-parts'][0];
+      //document.getElementById("output5").innerHTML = entry.data[0]['published']['date-parts'][0];
       //document.getElementById("output5").innerHTML = item.published.date[0];
       document.getElementById("output6").innerHTML = entry.data[0].type;
       //10.1016/j.proeng.2011.08.552
