@@ -55,7 +55,7 @@ export default{
             intMonth = parseInt(entry.data[0]['published']['date-parts'][0][1].toString());
             intMonth = intMonth - 1;
             month = intMonth.toString();
-            day = ['published']['date-parts'][0][2].toString();
+            day = entry.data[0]['published']['date-parts'][0][2].toString();
             year = entry.data[0]['published']['date-parts'][0][0].toString();
             } 
               else if (entry.data[0]['published']['date-parts'][0].length === 2) {
